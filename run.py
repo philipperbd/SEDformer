@@ -33,7 +33,7 @@ def main():
                         help='mwt cross atention activation function tanh or softmax')
     
     # supplementary config for SEDformer model
-    parser.add_argument('--depth', type=int, default=3, help='signature depth')
+    parser.add_argument('--depth', type=int, default=2, help='signature depth')
 
     # data loader
     parser.add_argument('--data', type=str, default='ETTh1', help='dataset type')

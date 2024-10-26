@@ -41,22 +41,16 @@ class Model(nn.Module):
         encoder_self_att = SignatureBlock(in_channels=configs.d_model,
                                               out_channels=configs.d_model,
                                               seq_len=self.seq_len,
-                                              depth=self.depth,
-                                              window_size=self.window_size,
-                                              step_size=self.step_size)
+                                              depth=self.depth)
         decoder_self_att = SignatureBlock(in_channels=configs.d_model,
                                               out_channels=configs.d_model,
                                               seq_len=self.seq_len//2 + self.pred_len,
-                                              depth=self.depth,
-                                              window_size=self.window_size,
-                                              step_size=self.step_size)
+                                              depth=self.depth)
         decoder_cross_att = SignatureCrossAttention(in_channels=configs.d_model,
                                                         out_channels=configs.d_model,
                                                         seq_len_q=self.seq_len//2 + self.pred_len,
                                                         seq_len_kv=self.seq_len,
                                                         depth=self.depth,
-                                                        window_size=self.window_size,
-                                                        step_size=self.step_size,
                                                         activation=configs.cross_activation)
 
         # Encoder
@@ -127,7 +121,7 @@ class Model(nn.Module):
 if __name__ == '__main__':
     class Configs(object):
         version = 'Signatures'  # Choisir 'Signatures' pour utiliser les nouveaux blocs
-        depth = 3  # Profondeur de la signature
+        depth = 2  # Profondeur de la signature
         modes = 32
         moving_avg = [12, 24]
         seq_len = 96
@@ -136,7 +130,7 @@ if __name__ == '__main__':
         output_attention = True
         enc_in = 7
         dec_in = 7
-        d_model = 16
+        d_model = 8
         embed = 'timeF'
         dropout = 0.05
         freq = 'h'

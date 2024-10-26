@@ -19,7 +19,7 @@ python -u run.py \
  --features M \
  --seq_len 96 \
  --label_len 48 \
- --depth 3 \
+ --depth 2 \
  --pred_len $preLen \
  --e_layers 2 \
  --d_layers 1 \

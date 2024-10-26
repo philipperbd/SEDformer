@@ -4,13 +4,14 @@ import torch.nn as nn
 import signatory
 
 class SignatureBlock(nn.Module):
-    def __init__(self, in_channels, out_channels, seq_len, depth=3):
+    def __init__(self, in_channels, out_channels, seq_len, depth=2):
         super(SignatureBlock, self).__init__()
         print('Signature-based block used!')
         self.depth = depth
-        self.in_channels = in_channels
+        self.max_features = 1024  # Limiter à une taille raisonnable
+        self.in_features = min((in_channels * (in_channels**self.depth - 1)) // (in_channels - 1), self.max_features)
         self.out_channels = out_channels
-        self.linear = nn.Linear((in_channels * (in_channels**self.depth - 1)) // (in_channels - 1), out_channels)
+        self.linear = nn.Linear(self.in_features, self.out_channels)
 
     def forward(self, q, k, v, mask):
         # q.size() = [B, L, H, E]
@@ -29,7 +30,7 @@ class SignatureBlock(nn.Module):
         return (x_transformed, None)
 
 class SignatureCrossAttention(nn.Module):
-    def __init__(self, in_channels, out_channels, seq_len_q, seq_len_kv, depth=3, activation='tanh'):
+    def __init__(self, in_channels, out_channels, seq_len_q, seq_len_kv, depth=2, activation='tanh'):
         super(SignatureCrossAttention, self).__init__()
         print('Signature-based cross attention used!')
         self.activation = activation
