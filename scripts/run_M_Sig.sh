@@ -5,7 +5,7 @@ export CUDA_VISIBLE_DEVICES=1
 for model in SEDformer
 do
 
-for preLen in 96 192 336 720
+for preLen in 96  336 720
 do
 
 # weather
@@ -19,16 +19,20 @@ python -u run.py \
  --features M \
  --seq_len 96 \
  --label_len 48 \
- --depth 2 \
+ --depth 1 \
  --pred_len $preLen \
- --e_layers 2 \
+ --batch_size 16 \
+ --e_layers 1 \
  --d_layers 1 \
+ --d_model 32 \      
+ --d_ff 128 \        
  --factor 3 \
  --enc_in 21 \
  --dec_in 21 \
  --c_out 21 \
  --des 'Exp' \
- --itr 3
+ --itr 3 \
+ --use_amp \
 done
 
 

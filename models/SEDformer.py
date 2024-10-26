@@ -41,17 +41,20 @@ class Model(nn.Module):
         encoder_self_att = SignatureBlock(in_channels=configs.d_model,
                                               out_channels=configs.d_model,
                                               seq_len=self.seq_len,
-                                              depth=self.depth)
+                                              depth=self.depth,
+                                              embed_dim=configs.d_model)
         decoder_self_att = SignatureBlock(in_channels=configs.d_model,
                                               out_channels=configs.d_model,
                                               seq_len=self.seq_len//2 + self.pred_len,
-                                              depth=self.depth)
+                                              depth=self.depth,
+                                              embed_dim=configs.d_model)
         decoder_cross_att = SignatureCrossAttention(in_channels=configs.d_model,
                                                         out_channels=configs.d_model,
                                                         seq_len_q=self.seq_len//2 + self.pred_len,
                                                         seq_len_kv=self.seq_len,
                                                         depth=self.depth,
-                                                        activation=configs.cross_activation)
+                                                        activation=configs.cross_activation,
+                                                        embed_dim=configs.d_model)
 
         # Encoder
         self.encoder = Encoder(
@@ -124,7 +127,7 @@ if __name__ == '__main__':
         depth = 2  # Profondeur de la signature
         modes = 32
         moving_avg = [12, 24]
-        seq_len = 96
+        seq_len = 64
         label_len = 48
         pred_len = 96
         output_attention = True
