@@ -31,6 +31,9 @@ def main():
     parser.add_argument('--base', type=str, default='legendre', help='mwt base')
     parser.add_argument('--cross_activation', type=str, default='tanh',
                         help='mwt cross atention activation function tanh or softmax')
+    
+    # supplementary config for SEDformer model
+    parser.add_argument('--depth', type=int, default=3, help='signature depth')
 
     # data loader
     parser.add_argument('--data', type=str, default='ETTh1', help='dataset type')

@@ -18,7 +18,7 @@ class Model(nn.Module):
     def __init__(self, configs):
         super(Model, self).__init__()
         self.version = configs.version
-        self.depth = configs.signature_depth  # Profondeur de la signature
+        self.depth = configs.depth  # Profondeur de la signature
         self.seq_len = configs.seq_len
         self.label_len = configs.label_len
         self.pred_len = configs.pred_len
@@ -38,20 +38,19 @@ class Model(nn.Module):
                                                   configs.dropout)
 
         # Choisir le bloc d'attention en fonction de la version
-        if configs.version == 'Signatures':
-            encoder_self_att = SignatureBlock(in_channels=configs.d_model,
+        encoder_self_att = SignatureBlock(in_channels=configs.d_model,
                                               out_channels=configs.d_model,
                                               seq_len=self.seq_len,
                                               depth=self.depth,
                                               window_size=self.window_size,
                                               step_size=self.step_size)
-            decoder_self_att = SignatureBlock(in_channels=configs.d_model,
+        decoder_self_att = SignatureBlock(in_channels=configs.d_model,
                                               out_channels=configs.d_model,
                                               seq_len=self.seq_len//2 + self.pred_len,
                                               depth=self.depth,
                                               window_size=self.window_size,
                                               step_size=self.step_size)
-            decoder_cross_att = SignatureCrossAttention(in_channels=configs.d_model,
+        decoder_cross_att = SignatureCrossAttention(in_channels=configs.d_model,
                                                         out_channels=configs.d_model,
                                                         seq_len_q=self.seq_len//2 + self.pred_len,
                                                         seq_len_kv=self.seq_len,
@@ -128,7 +127,7 @@ class Model(nn.Module):
 if __name__ == '__main__':
     class Configs(object):
         version = 'Signatures'  # Choisir 'Signatures' pour utiliser les nouveaux blocs
-        signature_depth = 4  # Profondeur de la signature
+        depth = 3  # Profondeur de la signature
         modes = 32
         moving_avg = [12, 24]
         seq_len = 96
